@@ -160,7 +160,13 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-!/config.py
-!/db.db
-!/stupidGPT3.py
-!/the_dumbest_nerd_session.session
+/.idea/.gitignore
+/config.py
+/db.db
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/stupidGPT3.py
+/.idea/the-dumbest-nerd.iml
+/the_dumbest_nerd_session.session
+/.idea/vcs.xml
