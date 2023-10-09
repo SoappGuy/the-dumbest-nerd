@@ -93,8 +93,9 @@ async def help_command_handler(event):
         edited_text += f"\n{command} - [{random.choice(emoji_db)}](tg://user?id={user_id})"
 
         await m.edit(edited_text)
-    # msg_text = "\n".join(msg_list)
-    # m = await event.respond(msg_text)
+
+    edited_text += f"\n\n[github](https://github.com/SoappGuy/the-dumbest-nerd)|[author](tg://user?id=921172948)"
+    await m.edit(edited_text)
 
 
 async def add_user_to_whitelist_command_handler(event):
