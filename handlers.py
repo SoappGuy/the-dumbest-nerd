@@ -253,7 +253,7 @@ async def summarise(event):
             messages_text.append(message[1])
 
     # промпт для джипіті
-    prompt = f'''Надай список найобговорюваніших тем у цих повідомленнях, але не більше 10. Не розповідай про подібні теми, згрупуй їх в одну. Відповідай українською: \n'''
+    prompt = f'''Надай список найобговорюваніших тем у цих повідомленнях, але не більше 10. Напиши по реченню для кожної теми. Не розповідай про подібні теми, згрупуй їх в одну. Відповідай українською: \n'''
     prompt += "\n".join(messages_text[::-1])
 
     # формування запиту для API
@@ -266,6 +266,6 @@ async def summarise(event):
     )
 
     # надсилання результату
-    await m.edit(f'~\n{response["choices"][0]["message"]["content"]}\n\nTokens used - {response["usage"]["total_tokens"]}')
+    await m.edit(f'/\n{response["choices"][0]["message"]["content"]}\n\nTokens used - {response["usage"]["total_tokens"]}')
 
 
