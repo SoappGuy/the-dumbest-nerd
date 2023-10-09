@@ -170,3 +170,5 @@ cython_debug/
 /.idea/the-dumbest-nerd.iml
 /the_dumbest_nerd_session.session
 /.idea/vcs.xml
+/dumb_log.log
+/the_dumbest_nerd_session.session-journal

@@ -92,12 +92,12 @@ def save_message_to_db(message_text, sender, timestamp, chat_id):
 
 
 # Функція для зчитування останніх N повідомлень з бази даних
-def get_last_n_messages(n, database_path='db.db'):
-    conn = sqlite3.connect(database_path)
+def get_last_n_messages(n, chat_id):
+    conn = sqlite3.connect('db.db')
     cursor = conn.cursor()
 
     # Зчитування останніх N повідомлень
-    cursor.execute(f"SELECT * FROM db ORDER BY timestamp DESC LIMIT ?",
+    cursor.execute(f"SELECT * FROM chat_{abs(int(chat_id))} ORDER BY timestamp DESC LIMIT ?",
                    (n,))
 
     db = cursor.fetchall()
@@ -105,6 +105,21 @@ def get_last_n_messages(n, database_path='db.db'):
     conn.close()
 
     return db
+
+
+# Функція для отримання всіх вайтлистів з бази даних
+def get_all_whitelists(chat_id):
+    conn = sqlite3.connect('db.db')
+    cursor = conn.cursor()
+
+    # Виконає SQL-запит для отримання всіх вайтлистів
+    cursor.execute(f"SELECT command, user_id FROM whitelists_{abs(int(chat_id))}")
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    # Поверне результат у вигляді списку кортежів (command, user_id)
+    return rows
 
 
 # Сам розберешся
