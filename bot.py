@@ -3,8 +3,8 @@ from config import api_id, api_hash, bot_token
 from handlers import *
 import logging
 
-logging.basicConfig(level=logging.NOTSET, filename="dumb_log.log", filemode="w",
-                    format="%(asctime)s %(levelname)s %(message)s")
+logging.basicConfig(level=logging.WARNING, filename="dumb_log.log", filemode="w",
+                    format="%(levelname)s %(message)s")
 
 # Telegram session
 client = TelegramClient('the_dumbest_nerd_session', api_id, api_hash).start(bot_token=bot_token)
