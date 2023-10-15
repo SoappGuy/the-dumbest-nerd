@@ -253,7 +253,7 @@ async def summarise(event):
             messages_text.append(message[1])
 
     # промпт для джипіті
-    prompt = f'''Надай список найобговорюваніших тем у цих повідомленнях, але не більше 10. Напиши по реченню для кожної теми. Не розповідай про подібні теми, згрупуй їх в одну. Відповідай українською: \n'''
+    prompt = f"now you will be given messages, your task is to provide list of topics (maximum 10 topics) which was discussed in the conversation, start with the most discussed topics and end with those that were briefly mentioned (do not write about similar topics) (answer in Ukrainian):"
     prompt += "\n".join(messages_text[::-1])
 
     # формування запиту для API
