@@ -258,13 +258,15 @@ async def summarise(event):
     # формування запиту для API
     messages = []
     messages.append({"role": "user", "content": prompt})
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo-16k",  # бажана модель GPT
-        messages=messages,
-        temperature=0.8,  # строгість відповіді - чим менше тим точніше відповідь
-    )
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo-16k",  # бажана модель GPT
+            messages=messages,
+            temperature=0.8,  # строгість відповіді - чим менше тим точніше відповідь
+        )
 
-    # надсилання результату
-    await m.edit(f'sum of {arguments[0]} /\n{response["choices"][0]["message"]["content"]}\n\nTokens used - {response["usage"]["total_tokens"]}')
-
+        # надсилання результату
+        await m.edit(f'sum of {arguments[0]} /\n{response["choices"][0]["message"]["content"]}\n\nTokens used - {response["usage"]["total_tokens"]}')
+    except openai.error.ServiceUnavailableError:
+        await m.edit(f"сервера openai перевантажені, перепрошую за незручності, спробуйте пізніше")
 
