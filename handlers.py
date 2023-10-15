@@ -228,10 +228,9 @@ async def summarise(event):
     m = await event.respond('Processing ⏳..')
 
     arguments = get_args(event)
-    # перевірка чи є аргументи взагалі
+    # перевірка чи є аргументи взагалі, і якщо немає встановлює "100" як значення за змовчуванням
     if len(arguments) == 0:
-        await m.edit('Додай троха аргументів')
-        return
+        arguments[0] = "100"
 
     # перевірка чи є перший аргумент числом
     arguments[0] = re.sub(r'[^0-9]', '', arguments[0])
@@ -266,6 +265,6 @@ async def summarise(event):
     )
 
     # надсилання результату
-    await m.edit(f'/\n{response["choices"][0]["message"]["content"]}\n\nTokens used - {response["usage"]["total_tokens"]}')
+    await m.edit(f'sum of {arguments[0]} /\n{response["choices"][0]["message"]["content"]}\n\nTokens used - {response["usage"]["total_tokens"]}')
 
 
