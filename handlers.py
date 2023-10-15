@@ -268,5 +268,5 @@ async def summarise(event):
         # надсилання результату
         await m.edit(f'sum of {arguments[0]} /\n{response["choices"][0]["message"]["content"]}\n\nTokens used - {response["usage"]["total_tokens"]}')
     except openai.error.ServiceUnavailableError:
-        await m.edit(f"сервера openai перевантажені, перепрошую за незручності, спробуйте пізніше")
+        await m.edit(f"сервери openai перевантажені, перепрошую за незручності, спробуйте пізніше")
 
