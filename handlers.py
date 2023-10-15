@@ -230,7 +230,7 @@ async def summarise(event):
     arguments = get_args(event)
     # перевірка чи є аргументи взагалі, і якщо немає встановлює "100" як значення за змовчуванням
     if len(arguments) == 0:
-        arguments[0] = "100"
+        arguments = ["100"]
 
     # перевірка чи є перший аргумент числом
     arguments[0] = re.sub(r'[^0-9]', '', arguments[0])
