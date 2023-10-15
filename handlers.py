@@ -121,14 +121,17 @@ async def add_user_to_whitelist_command_handler(event):
 
         # Отримати id юзера якого треба додати
         reply = await event.client.get_messages(event.chat_id, ids=event.reply_to.reply_to_msg_id)
-        user_to_add = int(reply.sender_id)
-
+        user = await event.get_reply_message()
+        user_to_add = user.sender_id
+        sender = await user.get_sender()
+        firstname = sender.first_name
         # Нарешті додати до вайтлисту
-        if not is_user_in_whitelist(chat_id, command, user_id):
-            add_user_to_whitelist_db(chat_id, command, user_to_add)
-            await event.respond(f'✅[Юзера](tg://user?id={user_to_add}) успішно додано до {command}')
+        if is_user_in_whitelist(chat_id, command, user_to_add):
+            await event.respond(f'[{firstname}](tg://user?id={user_to_add}) вже має доступ до {command}')            
         else:
-            await event.respond(f'[Юзер](tg://user?id={user_to_add}) вже має доступ до {command}')
+            add_user_to_whitelist_db(chat_id, command, user_to_add)
+            await event.respond(f'✅[{firstname}](tg://user?id={user_to_add}) успішно додано до {command}')
+
 
     else:
 
@@ -159,14 +162,17 @@ async def remove_user_from_whitelist_command_handler(event):
 
         # Отримати id юзера якого треба видалити
         reply = await event.client.get_messages(event.chat_id, ids=event.reply_to.reply_to_msg_id)
-        user_to_add = int(reply.sender_id)
+        user = await event.get_reply_message()
+        user_to_add = user.sender_id
+        sender = await user.get_sender()
+        firstname = sender.first_name
 
         # Нарешті видалити з вайтлисту
-        if is_user_in_whitelist(chat_id, command, user_id):
+        if is_user_in_whitelist(chat_id, command, user_to_add):
             remove_user_from_whitelist_db(chat_id, command, user_to_add)
-            await event.respond(f'✅[Юзера](tg://user?id={user_to_add}) успішно видалено з {command}')
+            await event.respond(f'✅[{firstname}](tg://user?id={user_to_add}) успішно видалено з {command}')
         else:
-            await event.respond(f'[Юзер](tg://user?id={user_to_add}) і так не має доступ до {command}')
+            await event.respond(f'[{firstname}](tg://user?id={user_to_add}) і так не має доступу до {command}')
 
     else:
 

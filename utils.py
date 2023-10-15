@@ -49,15 +49,13 @@ def is_user_in_whitelist(chat_id, command, user_id):
 
     conn = sqlite3.connect('db.db')
     cursor = conn.cursor()
-
     # Перевірить, чи користувач знаходиться в вайтлисті
     cursor.execute(f"SELECT 1 FROM whitelists_{abs(int(chat_id))} WHERE command = ? AND user_id = ?",
                    (command, user_id))
     result = cursor.fetchone()
-
     conn.close()
-
     return result is not None
+
 
 
 # Функція для створення таблиці для нової групи
