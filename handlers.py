@@ -256,6 +256,7 @@ async def summarise(event):
     for message in messages:
         if "/" not in message[1]:  # якщо у повідомленні є "/" це повідомлення не буде враховуватись
             messages_text.append(message[1])
+            print(message[1])
 
     # промпт для джипіті
     prompt = f"now you will be given messages, your task is to provide list of topics (maximum 10 topics) which was discussed in the conversation, start with the most discussed topics and end with those that were briefly mentioned (do not write about similar topics) (answer in Ukrainian): \n"
