@@ -8,7 +8,7 @@ def create_whitelist_table(chat_id):
 
     # Створить таблицю, якщо вона ще не існує
     cursor.execute(f'''CREATE TABLE IF NOT EXISTS whitelists_{abs(int(chat_id))}
-                          (command TEXT PRIMARY KEY,
+                          (command TEXT,
                            user_id INTEGER)''')
 
     conn.commit()
