@@ -3,6 +3,7 @@ import time
 import emoji
 import random
 import openai
+from openai import OpenAI
 import re
 import config
 
@@ -17,8 +18,7 @@ STARTUP_TIME = time.time()
 emoji_db = list(emoji.EMOJI_DATA.keys())
 
 # API openai
-openai.api_key = config.openai_api_hash
-
+client = OpenAI(api_key=config.openai_api_hash)
 
 async def universal_message_handler(event):
     chat_id = event.chat_id
@@ -131,7 +131,6 @@ async def add_user_to_whitelist_command_handler(event):
         else:
             add_user_to_whitelist_db(chat_id, command, user_to_add)
             await event.respond(f'✅[{firstname}](tg://user?id={user_to_add}) успішно додано до {command}')
-
 
     else:
 
@@ -261,21 +260,27 @@ async def summarise(event):
         f.write("\n".join(messages_text))
 
     # промпт для джипіті
-    prompt = f"now you will be given messages, your task is to provide list of topics (maximum 10 topics) which was discussed in the conversation, start with the most discussed topics and end with those that were briefly mentioned (do not write about similar topics) (answer in Ukrainian): \n"
-    prompt += "--".join(messages_text[::-1])
+    prompt = (f"Виходячи з тексту останніх {len(messages_text)} повідомлень, надай список тем, які були обговорені. Будь ласка, дотримуйся наступних інструкцій:"
+              f"1. Надай від 1 до 10 тем."
+              f"2. Опис кожної теми повинен бути коротким і зрозумілим."
+              f"3. Не надавай детальний опис кожної теми."
+              f"4. Уникай занадто загальних тем, намагайся бути конкретним, але не занадто деталізованим."
+              f"5. Кожна тема має бути унікальною, уникай навіть трохи схожі теми."
+              f"6. Не надавай інформацію про тему якщо у тебе надто мало інформації про неї."
+              f"Останні {len(messages_text)} повідомлень):\n")
+
+    prompt += "\n\n".join(messages_text[::-1])
 
     # формування запиту для API
     messages = []
     messages.append({"role": "user", "content": prompt})
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-16k",  # бажана модель GPT
-            messages=messages,
-            temperature=0.8,  # строгість відповіді - чим менше тим точніше відповідь
-        )
+        response = client.chat.completions.create(model="gpt-3.5-turbo-16k",  # бажана модель GPT
+        messages=messages,
+        temperature=0.8)
 
         # надсилання результату
-        await m.edit(f'sum of {arguments[0]} /\n{response["choices"][0]["message"]["content"]}\n\nTokens used - {response["usage"]["total_tokens"]}')
-    except openai.error.ServiceUnavailableError:
+        await m.edit(f'sum of {arguments[0]} /\n{response.choices[0].message.content}\n\nTokens used - {response.usage.total_tokens}')
+    except openai.ServiceUnavailableError:
         await m.edit(f"сервери openai перевантажені, перепрошую за незручності, спробуйте пізніше")
 
